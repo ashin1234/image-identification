@@ -1,0 +1,23 @@
+body{
+    text-align: center;
+    color: azure;
+    background-color: deepskyblue;
+}
+.heading{
+    width: 100%;
+    font-size: 25px;
+
+}
+.name_of_objects{
+    color: paleturquoise;
+}
+#camera,#result{
+    border: 2px solid lightgreen;
+    width: 350px;
+    height: 300px;
+}
+#result_object_name,#result_object_accuracy{
+    font-size: 22px;
+    color: darkblue;
+    
+}

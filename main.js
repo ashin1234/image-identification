@@ -1,33 +1,37 @@
-Webcam.set({
-    width:350,
-    height:300,
-    image_format:'png',
-    png_quality:90
-});
-camera=document.getElementById("camera");
-Webcam.attach('#camera');
-function take_snapshot(){
-    Webcam.snap(function(data_uri){
-        document.getElementById('result').innerHTML='<img id="captured_image" src="'+data_uri+'">';
-    });
+function setup() {
+    canvas = createCanvas(280, 280);
+    canvas.center();
+    background("white");
+    canvas.mouseReleased(classifyCanvas);
+    synth = window.speechSynthesis;
 }
-console.log("ml5 version:",ml5.version);
-classifier=ml5.imageClassifier('https://teachablemachine.withgoogle.com/models/T5VKMCn5G/model.json',modelLoaded);
-function modelLoaded(){
-    console.log("model loaded!");
-}
-function check(){
-    img=document.getElementById("captured_image");
-    classifier.classify(img,gotResult);
-}
-function gotResult(error,results){
-    if(error){
-        console.log(error);
-    }
-    else{
-        console.log(results);
-        document.getElementById("result_object_name").innerHTML=results[0].label;
-        document.getElementById("result_object_accuracy").innerHTML=results[0].confidence.toFixed(5);
-    }
 
+function clearCanvas() {
+    background("white");
+}
+
+function preload() {
+    classifier = ml5.imageClassifier('DoodleNet');
+}
+function draw() {
+    strokeWeight(13);
+    stroke(0);
+    if (mouseIsPressed) {
+        line(pmouseX, pmouseY, mouseX, mouseY);
+    }
+}
+
+function classifyCanvas() {
+    classifier.classify(canvas, gotResult);
+}
+
+function gotResult(error, results) {
+    if (error) {
+        console.error(error);
+    }
+    console.log(results);
+    document.getElementById('label').innerHTML = 'label: ' + results[0].label;
+    document.getElementById('confidence').innerHTML = 'confidence: ' + Math.round(results[0].confidence * 100) + '%';
+    utterThis = new SpeechSynthesisUtterance(results[0].label);
+    synth.speak(utterThis);
 }

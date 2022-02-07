@@ -20,7 +20,7 @@ function gotResult(error, results){
     if(error){
         console.error(error);
     } else {
-        if((results[0].confisence > 0.5) && (previous_result!= results[0].label)){
+        if((results[0].confidence > 0.5) && (previous_result!= results[0].label)){
                 console.log(results);
                 previous_result = results[0].label;
                 var synth = window.speechSynthesis;
